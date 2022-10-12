@@ -16,12 +16,24 @@
 
         <p>You should be logged in now</p>
 
-        <h3>ItemList</h3>
+        <h3>Doing</h3>
         <ul>
             <c:forEach var="item" items="${requestScope.itemList}">
-                <li>${item.name} (${item.created})</li>
+                <c:if test="$(item.done == false)">
+                    <li>${item.name} (${item.created})</li>
+                </c:if>
             </c:forEach>
         </ul>
+
+        <h3>Done and Finished</h3>
+        <ul>
+            <c:forEach var="item" items="${requestScope.itemList}">
+                <c:if test="$(item.done == true)">
+                    <li>${item.name} (${item.created})</li>
+                </c:if>
+            </c:forEach>
+        </ul>
+
 
         <c:if test="${sessionScope.user != null}">
             <p>You are logged in with the role of "${sessionScope.user.role}".</p>
