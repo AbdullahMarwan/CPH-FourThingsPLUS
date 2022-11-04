@@ -3,47 +3,61 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page errorPage="../error.jsp" isErrorPage="false" %>
 
-<t:pagetemplate>
+<t:fourthingsplus>
     <jsp:attribute name="header">
          Welcome to the logged in area
     </jsp:attribute>
 
-    <jsp:attribute name="footer">
-        Logged in area
-    </jsp:attribute>
-
     <jsp:body>
 
-        <p>You should be logged in now</p>
+        <form method="post">
+            <h3>Tasks in progress</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <c:forEach var="item" items="${requestScope.itemList}">
+                    <c:if test="${item.done == false}">
+                        <tr>
+                            <td>
+                                    ${item.name} (${item.created})
+                            </td>
+                            <td>
+                                <button formaction="toggleitem" name="item_id" value="${item.id}">
+                                    Done
+                                </button>
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </table>
 
-        <h3>Doing</h3>
-        <ul>
-            <c:forEach var="item" items="${requestScope.itemList}">
-                <c:if test="$(item.done == false)">
-                    <li>${item.name} (${item.created})</li>
-                </c:if>
-            </c:forEach>
-        </ul>
-
-        <h3>Done and Finished</h3>
-        <ul>
-            <c:forEach var="item" items="${requestScope.itemList}">
-                <c:if test="$(item.done == true)">
-                    <li>${item.name} (${item.created})</li>
-                </c:if>
-            </c:forEach>
-        </ul>
-
-
-        <c:if test="${sessionScope.user != null}">
-            <p>You are logged in with the role of "${sessionScope.user.role}".</p>
-        </c:if>
-
-        <c:if test="${sessionScope.user == null}">
-            <p>You are not logged in yet. You can do it here: <a
-                    href="../login.jsp">Login</a></p>
-        </c:if>
+            <h3>Completed tasks</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <c:forEach var="item" items="${requestScope.itemList}">
+                    <c:if test="${item.done == true}">
+                        <tr>
+                            <td>
+                                    ${item.name} (${item.created})
+                            </td>
+                            <td>
+                                Undo
+                            </td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </table>
+        </form>
 
     </jsp:body>
 
-</t:pagetemplate>
+</t:fourthingsplus>
